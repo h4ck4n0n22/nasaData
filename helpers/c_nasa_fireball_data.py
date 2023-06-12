@@ -28,7 +28,11 @@ class c_nasa_fireball_data:
         Returns:
             dict: json object containing requests response
         """
-        post = requests.post('https://ssd-api.jpl.nasa.gov/fireball.api', headers = headers)
+        post = requests.post(
+            'https://ssd-api.jpl.nasa.gov/fireball.api',
+            headers = headers
+        )
+        
         json_data = json.loads(post.text)
         return json_data
 
