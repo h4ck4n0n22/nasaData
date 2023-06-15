@@ -1,8 +1,11 @@
+import os
 import json
 import csv
 
+output_directory = os.path.join(os.getcwd(), 'outputs')
+
 class c_output_helpers:
-    def __init__(self, out_file, filetype, data) -> None:
+    def __init__(self, out_file, filetype, data):
         self.out_file = out_file
         self.filetype = filetype
         self.data = data
@@ -19,6 +22,8 @@ class c_output_helpers:
                 exit()
     
     def help_output(self):
+        """
+        """
         help_string = """
         Writing data to file failure
 
@@ -33,12 +38,17 @@ class c_output_helpers:
          pass
     
     def handle_json_data(self):
+        """ helper function to dave json data to disk
+        """
         json_object = json.dumps(self.data, indent=4)
-        with open(self.out_file, mode = 'w') as data_file:
+        with open(f'{output_directory}/{self.out_file}.json', mode = 'w') as data_file:
             data_file.write(json_object)
     
     def handle_csv_data(self):
-         with open(self.out_file, mode = 'w', newline = '') as data_file:
+        """ Helper function to save csv data to disk
+        """
+        with open(f'{output_directory}/{self.out_file}.csv',
+                  mode = 'w', newline = '') as data_file:
             data_writer = csv.writer(
                 data_file,
                 delimiter = ',',
