@@ -23,7 +23,7 @@ def help_output():
         - hss
         - wsa
         - notifications
-    * exoplanet data [must include exo_data_type (-e)] one of:
+    * exoplanet [must include exo_data_type (-e)] one of:
         - kooi
         - tce
         - kst
