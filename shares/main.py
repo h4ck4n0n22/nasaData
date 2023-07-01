@@ -1,6 +1,7 @@
 import sys
 import getopt
 from nasa_api import c_nasa_fireball_data, c_nasa_asteroid_neo_data, c_nasa_potd_data, c_nasa_donki_data
+from exoplanet_api import c_exoplanet_data
 
 def help_output():
     help_string = """
@@ -22,10 +23,17 @@ def help_output():
         - hss
         - wsa
         - notifications
+    * exoplanet data [must include exo_data_type (-e)] one of:
+        - kooi
+        - tce
+        - kst
+        - k2t
+        - maes
+        - cpm
     """
     return help_string
 
-def select_data(datatype, out_file, donki_type=''):
+def select_data(datatype, out_file, donki_type='', exo_data_type=''):
     """_summary_
 
     Args:
@@ -45,6 +53,11 @@ def select_data(datatype, out_file, donki_type=''):
                 print(help_output())
                 exit()
             c_nasa_donki_data.get_donki_data(donki_type, out_file)
+        case 'exoplanet':
+            if exo_data_type == '':
+                print(help_output())
+                exit()
+            c_exoplanet_data.get_exoplanet_data(exo_data_type, out_file)
         case _:
             print(help_output())
             exit()
@@ -53,11 +66,13 @@ def main(argv):
     datatype = ''
     out_file = ''
     donki_type = ''
+    exo_data_type = ''
     try:
-        opts, args = getopt.getopt(argv,"hd:o:k:",
+        opts, args = getopt.getopt(argv,"hd:o:k:e:",
                                    ["datatype=",
                                     "out_file=",
-                                    "donki_type="]
+                                    "donki_type=",
+                                    "exo_data_type="]
                                 )
     except getopt.GetoptError:
         print(help_output())
@@ -73,8 +88,10 @@ def main(argv):
             out_file = arg
         elif opt in ('-k', '--donki_type'):
             donki_type = arg
+        elif opt in ('-e', '--exo_data_type'):
+            exo_data_type = arg
     
-    select_data(datatype, out_file, donki_type)
+    select_data(datatype, out_file, donki_type, exo_data_type)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
