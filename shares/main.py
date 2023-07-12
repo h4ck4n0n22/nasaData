@@ -5,13 +5,15 @@ from exoplanet_api import c_exoplanet_data
 
 def help_output():
     help_string = """
-    main.py -d <datatype> -o <out_file> [optional: -k <donki_type>]
+    main.py -d <datatype> -o <out_file> [optional args]
 
     datatype can be one of:
     * fireball
     * asteroid_neo
     * potd
-    * donki [must include donki_type (-k)] one of:
+    * donki 
+        [optional args: start_date (-sd) end_date (-ed)]
+        [must include donki_type (-k)] one of:
         - cme
         - cmea
         - gst
@@ -33,7 +35,12 @@ def help_output():
     """
     return help_string
 
-def select_data(datatype, out_file, donki_type='', exo_data_type=''):
+def select_data(datatype, 
+                out_file, 
+                donki_type='', 
+                exo_data_type='',
+                start_date = '',
+                end_date = ''):
     """_summary_
 
     Args:
@@ -52,7 +59,7 @@ def select_data(datatype, out_file, donki_type='', exo_data_type=''):
             if donki_type == '':
                 print(help_output())
                 exit()
-            c_nasa_donki_data.get_donki_data(donki_type, out_file)
+            c_nasa_donki_data.get_donki_data(donki_type, out_file, start_date, end_date)
         case 'exoplanet':
             if exo_data_type == '':
                 print(help_output())
@@ -67,12 +74,16 @@ def main(argv):
     out_file = ''
     donki_type = ''
     exo_data_type = ''
+    start_date = ''
+    end_date = ''
     try:
-        opts, args = getopt.getopt(argv,"hd:o:k:e:",
+        opts, args = getopt.getopt(argv,"hd:o:k:e:sd:ed:",
                                    ["datatype=",
                                     "out_file=",
                                     "donki_type=",
-                                    "exo_data_type="]
+                                    "exo_data_type=",
+                                    "start_date=",
+                                    "end_date="]
                                 )
     except getopt.GetoptError:
         print(help_output())
@@ -90,8 +101,12 @@ def main(argv):
             donki_type = arg
         elif opt in ('-e', '--exo_data_type'):
             exo_data_type = arg
+        elif opt in ('-sd', '--start_date'):
+            start_date = arg
+        elif opt in ('-ed', '--end_date'):
+            end_date = arg
     
-    select_data(datatype, out_file, donki_type, exo_data_type)
+    select_data(datatype, out_file, donki_type, exo_data_type, start_date, end_date)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
