@@ -1,4 +1,0 @@
-requests
-plotly
-pandas
-jupyter
